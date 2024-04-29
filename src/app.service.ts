@@ -10,11 +10,17 @@ import { NumberOfBuyersDto } from './dto/number-of-buyers.dto';
 import { CalculateTOneDto } from './dto/calculate-t-one.dto';
 import { ResultForRangeDto } from './dto/result-for-range.dto';
 import { FetchAllStatsDto } from './dto/fetch-all-stats.dto';
+import { CreateNewOrderDto } from './dto/create-new-order.dto';
+import { AdAnalysisEntity } from './entities/ad-analysis.entity';
+import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
 export class AppService {
   @InjectRepository(UserEntity)
   private UserRepository: Repository<UserEntity>;
+
+  @InjectRepository(AdAnalysisEntity)
+  private AdAnalysisRepository: Repository<AdAnalysisEntity>;
 
   // private product_cost = 2;
   // private ad_density = 0.0001;
@@ -27,22 +33,22 @@ export class AppService {
     return 'Hello World!';
   }
 
-  async createNewUser(CreateNewUser: CreateNewUserDto): Promise<boolean> {
+  async createNewUser(createNewUser: CreateNewUserDto) {
     try {
       const saltRounds = 10;
       const salt = await bcrypt.genSalt(saltRounds);
-      const hashedPassword = await bcrypt.hash(CreateNewUser.password, salt);
+      const hashedPassword = await bcrypt.hash(createNewUser.password, salt);
       await this.UserRepository.createQueryBuilder('user')
         .insert()
         .into(UserEntity)
         .values({
-          email: CreateNewUser.email,
-          role: CreateNewUser.role,
-          nick_name: CreateNewUser.nick_name,
+          email: createNewUser.email,
+          role: 'customer',
+          nick_name: createNewUser.nick_name,
           password: hashedPassword,
         })
         .execute();
-      return true;
+      return createNewUser;
     } catch (e) {
       console.error(e);
       return false;
@@ -149,7 +155,7 @@ export class AppService {
 
   async calculateResultsForRange(data: ResultForRangeDto) {
     const results: Record<number, number> = {};
-    for (let G12 = 0; G12 <= 30; G12++) {
+    for (let G12 = 0; G12 <= data.last_ad_day; G12++) {
       const result = this.calculateResults(G12, data);
       results[G12] = await result;
     }
@@ -184,6 +190,75 @@ export class AppService {
       }
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  async getCustomerByEmail(email: string) {
+    try {
+      const user = await this.UserRepository.findOne({
+        where: { email: email },
+      });
+      console.log(user);
+      return user;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async getCustomerById(customerId: number) {
+    try {
+      const user = await this.UserRepository.findOne({
+        where: { id: customerId },
+      });
+      console.log(user);
+      return user;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async createNewOrder(data: CreateNewOrderDto) {
+    try {
+      const adModel = await this.fetchAllStats(data);
+      const customer = await this.getCustomerByEmail(data.email);
+      const key = `K2024${Math.floor(1000 + Math.random() * 9000)}${String.fromCharCode(65 + Math.floor(Math.random() * 26))}`;
+      await this.AdAnalysisRepository.createQueryBuilder('analysis')
+        .insert()
+        .into(AdAnalysisEntity)
+        .values({
+          email: data.email,
+          customer_id: customer.id,
+          adequacy_of_advertising: adModel.adequacyOfAdvertising,
+          t_one: adModel.tOne,
+          number_of_buyers: adModel.numberOfBuyers,
+          data_for_diagrams: adModel.dataForDiagrams,
+          total_income: adModel.totalIncome,
+          total_cost: adModel.totalCost,
+          profit: adModel.profit,
+          key: key,
+        })
+        .execute();
+      return {
+        email: data.email,
+        adModel,
+        key: key,
+      };
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  async getOrderByCustomerEmail(email: GetUserDto) {
+    const customer = await this.getCustomerByEmail(email.email);
+    try {
+      const orders = await this.AdAnalysisRepository.find({
+        where: { customer_id: customer.id },
+      });
+      console.log(orders);
+      return orders;
+    } catch (e) {
+      console.error(e);
     }
   }
 }

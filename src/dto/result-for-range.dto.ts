@@ -16,4 +16,8 @@ export class ResultForRangeDto {
   @IsNotEmpty()
   @IsNumber()
   coefficient_k: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  last_ad_day: number;
 }

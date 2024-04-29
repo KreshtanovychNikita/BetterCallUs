@@ -7,6 +7,8 @@ import { NumberOfBuyersDto } from './dto/number-of-buyers.dto';
 import { CalculateTOneDto } from './dto/calculate-t-one.dto';
 import { ResultForRangeDto } from './dto/result-for-range.dto';
 import { FetchAllStatsDto } from './dto/fetch-all-stats.dto';
+import { CreateNewOrderDto } from './dto/create-new-order.dto';
+import { GetUserDto } from './dto/get-user.dto';
 
 @Controller()
 export class AppController {
@@ -54,5 +56,25 @@ export class AppController {
   @Post('calculating/fetchAllStats')
   async fetchAllStats(@Body() fetchAllStats: FetchAllStatsDto) {
     return await this.appService.fetchAllStats(fetchAllStats);
+  }
+
+  @Post('calculating/createNewOrder')
+  async createNewOrder(@Body() createNewOrder: CreateNewOrderDto) {
+    return await this.appService.createNewOrder(createNewOrder);
+  }
+
+  @Post('getCustomerByEmail')
+  async getCustomerByEmail(@Body() email: string) {
+    return await this.appService.getCustomerByEmail(email);
+  }
+
+  @Post('getCustomerById')
+  async getCustomerById(@Body() customerId: number) {
+    return await this.appService.getCustomerById(customerId);
+  }
+
+  @Post('getOrderByCustomerEmail')
+  async getOrderByCustomerEmail(@Body() email: GetUserDto) {
+    return await this.appService.getOrderByCustomerEmail(email);
   }
 }

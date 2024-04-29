@@ -5,7 +5,9 @@ import * as process from 'process';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-
+import { AdAnalysisEntity } from './entities/ad-analysis.entity';
+import { AdminController } from './admin/admin.controller';
+import { AdminService } from './admin/admin.service';
 
 @Module({
   imports: [
@@ -17,12 +19,12 @@ import { UserEntity } from './entities/user.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [UserEntity],
+      entities: [UserEntity, AdAnalysisEntity],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, AdAnalysisEntity]),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AdminController],
+  providers: [AppService, AdminService],
 })
 export class AppModule {}
