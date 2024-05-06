@@ -2,18 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateNewUserDto } from '../dto/create-new-user.dto';
 import * as bcrypt from 'bcrypt';
-import { EditUserDto } from '../dto/edit-user.dto';
-import { DeleteUserDto } from '../dto/delete-user.dto';
+import { EditUserDto } from './dto/edit-user.dto';
+import { DeleteUserDto } from './dto/delete-user.dto';
+import { CreateNewUserAdminDto } from './dto/create-new-user-admin.dto';
+import { AdAnalysisEntity } from '../entities/ad-analysis.entity';
+import { LoginToAdminDto } from './dto/login-to-admin.dto';
 
 @Injectable()
 export class AdminService {
   @InjectRepository(UserEntity)
   private UserRepository: Repository<UserEntity>;
 
+  @InjectRepository(AdAnalysisEntity)
+  private AdAnalysisRepository: Repository<AdAnalysisEntity>;
+
   async createNewUserByAdmin(
-    CreateNewUser: CreateNewUserDto,
+    CreateNewUser: CreateNewUserAdminDto,
   ): Promise<boolean> {
     try {
       const saltRounds = 10;
@@ -64,6 +69,41 @@ export class AdminService {
         return false;
       }
       return await this.UserRepository.remove(user);
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  async loginToAdmin(login: LoginToAdminDto) {
+    try {
+      const user = await this.UserRepository.findOne({
+        where: { email: login.email },
+      });
+      if (!user || (user.role !== 'admin' && user.role !== 'moderator')) {
+        return false;
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        login.password,
+        user.password,
+      );
+
+      return {
+        login: isPasswordValid,
+        name: user.nick_name,
+        role: user.role,
+      };
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  private async getOrderById(orderId: number) {
+    try {
+      return await this.AdAnalysisRepository.findOne({
+        where: { id: orderId },
+      });
     } catch (e) {
       console.log(e);
       return false;

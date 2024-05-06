@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -11,7 +11,7 @@ import { CalculateTOneDto } from './dto/calculate-t-one.dto';
 import { ResultForRangeDto } from './dto/result-for-range.dto';
 import { FetchAllStatsDto } from './dto/fetch-all-stats.dto';
 import { CreateNewOrderDto } from './dto/create-new-order.dto';
-import { AdAnalysisEntity } from './entities/ad-analysis.entity';
+import { AdAnalysisEntity } from '../entities/ad-analysis.entity';
 import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
