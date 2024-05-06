@@ -1,0 +1,39 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f078;
+}
+
+.mainLogo {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.button {
+  background-color: #cd9b50;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: rgb(225, 206, 206);
+  color: rgb(39, 15, 15);
+  transition: 0.7s;
+}
+
+.button:active {
+  transform: translateY(5px);
+}
+
+.bottomLine {
+  margin-top: 35px;
+  height: 10px;
+  width: 100%;
+  background-color: #cd9b50;
+}

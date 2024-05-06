@@ -1,0 +1,101 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #f5f078;
+  z-index: 0;
+  align-items: center;
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../../public/images/bettercallus.png');
+  background-size: 150%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: blur(8px);
+  z-index: -1;
+  margin-top: 40px;
+}
+
+.title {
+  background-color: #dec061;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title h1 {
+  font-style: italic;
+  color: rgb(154, 38, 34);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-left: 120px;
+}
+
+.profile {
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: #f5f078;
+  padding: 30px;
+  width: 500px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  justify-content: space-around;
+}
+
+.info img {
+  width: 25%;
+}
+
+.details {
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.details h3 {
+  padding-bottom: 4px;
+  border-bottom: 2px solid white;
+}
+
+.button {
+  cursor: pointer;
+  margin-top: 30px;
+  background-color: #cd9b50;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+.button:hover {
+  background-color: rgb(225, 206, 206);
+  color: rgb(39, 15, 15);
+  transition: 0.7s;
+}
+
+.button:active {
+  transform: translateY(5px);
+}
+
+.logoutButton {
+  margin-bottom: 60px;
+  width: 150px;
+}
