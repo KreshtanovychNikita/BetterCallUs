@@ -1,38 +1,5 @@
-/* App.css */
-
 .App {
-  text-align: center;
-  margin-top: 50px;
-}
-
-.title {
-  font-size: 2em;
-  color: #333;
-}
-
-.status {
-  font-size: 1.5em;
-  color: #666;
-  margin-top: 20px;
-}
-
-.input {
-  margin: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.button {
-  margin: 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.message {
-  color: red;
+  width: 1200px;
+  height: 100vh;
+  margin: 0 auto;
 }
