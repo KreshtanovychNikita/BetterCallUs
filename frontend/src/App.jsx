@@ -2,6 +2,13 @@
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 
+// .App {
+//   width: 1200px;
+//   height: 100vh;
+//   margin: 0 auto;
+// }
+
+
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
