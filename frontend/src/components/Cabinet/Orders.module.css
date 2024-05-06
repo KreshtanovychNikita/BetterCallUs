@@ -1,0 +1,95 @@
+.container {
+  flex: 1;
+  position: relative;
+  background-color: #f5f078;
+  z-index: 0;
+  align-items: center;
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../../public/images/bettercallus.png');
+  background-size: 150%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: blur(8px);
+  z-index: -1;
+  margin-top: 40px;
+}
+
+.title {
+  background-color: #dec061;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title h1 {
+  font-style: italic;
+  color: rgb(154, 38, 34);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-left: 120px;
+}
+
+.button {
+  margin: 30px 0 30px 50px;
+  background-color: #cd9b50;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: rgb(225, 206, 206);
+  color: rgb(39, 15, 15);
+  transition: 0.7s;
+}
+
+.button:active {
+  transform: translateY(5px);
+}
+
+.table {
+  margin: 0 auto;
+  margin-bottom: 50px;
+  background-color: #cd9b50;
+  padding: 20px;
+  border-radius: 20px;
+  width: 70%;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ffffff;
+  padding: 10px;
+  text-align: center;
+}
+
+.table thead {
+  background-color: #dec061;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f5f078;
+}
+
+.error {
+  background-color: #cd9b50;
+  padding: 20px;
+  width: 400px;
+  border-radius: 20px;
+  color: rgb(154, 38, 34);
+  margin: 0 auto;
+  margin-bottom: 50px;
+  text-align: center;
+}
