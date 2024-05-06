@@ -5,13 +5,40 @@ import { useAuth } from '../../context/AuthContext';
 
 const LogIn = () => {
   const [action, setAction] = useState('Увійти');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    login();
+  if (isLoggedIn) {
     navigate('/cabinet');
+  }
+
+  const handleLogin = async () => {
+    try {
+      const isLogin = await login(email, password);
+      if (isLogin.login === true) {
+        setIsLoggedIn(true);
+        navigate('/cabinet')
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
+
+  // const handleRegistration = async () => {
+  //   try {
+  //     const registrtion = await login(email, password);
+  //     if (isLogin.login === true) {
+  //       setIsLoggedIn(true);
+  //       navigate('/cabinet')
+  //     }
+  //   } catch (error) {
+  //     console.error('Login error:', error);
+  //   }
+  // };
 
   return (
     <div className={styles.container}>
@@ -24,25 +51,26 @@ const LogIn = () => {
           {action === 'Увійти' ? (
             <div></div>
           ) : (
-            <div className={styles.input}>
-              <img src="./images/person.png" alt="" />
-              <input type="text" placeholder="Ім'я" />
-            </div>
+              <div className={styles.input}>
+                <img src="./images/person.png" alt=""/>
+                <input type="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ім'я"/>
+              </div>
           )}
 
           <div className={styles.input}>
-            <img src="./images/email.png" alt="" />
-            <input type="email" placeholder="Email" />
+            <img src="./images/email.png" alt=""/>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
           </div>
           <div className={styles.input}>
-            <img src="./images/password.png" alt="" />
-            <input type="password" placeholder="Пароль" />
+            <img src="./images/password.png" alt=""/>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                   placeholder="Пароль"/>
           </div>
 
           {action === 'Зареєструватися' ? (
-            <div></div>
+              <div></div>
           ) : (
-            <div className={styles.forgotPassword}>
+              <div className={styles.forgotPassword}>
               <span>Забули пароль?</span>
             </div>
           )}
