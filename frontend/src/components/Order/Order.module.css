@@ -1,0 +1,61 @@
+/* .order {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-image: url('../../../public/images/bettercallus.png');
+  background-size: 150%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #f5f078;
+} */
+
+.order {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #f5f078;
+  min-height: 200px;
+  z-index: 0;
+}
+
+.order::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../../../public/images/bettercallus.png');
+  background-size: 150%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: blur(8px);
+  z-index: -1;
+}
+
+.title {
+  background-color: #dec061;
+  padding: 20px;
+}
+
+.title h1 {
+  font-style: italic;
+  color: rgb(154, 38, 34);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-left: 120px;
+}
+
+.type {
+  color: rgb(154, 38, 34);
+  margin: 0 auto;
+  width: 900px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: #dec061;
+  text-align: center;
+  font-weight: 900;
+  font-size: 18px;
+  border-radius: 20px;
+}
