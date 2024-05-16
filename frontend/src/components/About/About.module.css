@@ -5,6 +5,7 @@
   z-index: 0;
   align-items: center;
   overflow: auto;
+  height: 100vh;
 }
 
 .container::before {
