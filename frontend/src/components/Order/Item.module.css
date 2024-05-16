@@ -40,15 +40,15 @@
   text-align: center;
 }
 
-.adTitle::after {
+/* .adTitle::after {
   content: '';
   display: block;
   height: 2px;
   background-color: white;
-  width: 408px;
+  width: 350px;
   position: absolute;
   bottom: -1px;
-}
+} */
 
 .ratingStar {
   width: 40px;

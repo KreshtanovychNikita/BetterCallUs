@@ -1,13 +1,4 @@
-/* .order {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-image: url('../../../public/images/bettercallus.png');
-  background-size: 150%;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: #f5f078;
-} */
+
 
 .order {
   flex: 1;
@@ -15,7 +6,8 @@
   flex-direction: column;
   position: relative;
   background-color: #f5f078;
-  min-height: 200px;
+  height: 100vh;
+  overflow: auto;
   z-index: 0;
 }
 
