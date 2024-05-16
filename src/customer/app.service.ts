@@ -13,6 +13,7 @@ import { FetchAllStatsDto } from './dto/fetch-all-stats.dto';
 import { CreateNewOrderDto } from './dto/create-new-order.dto';
 import { AdAnalysisEntity } from '../entities/ad-analysis.entity';
 import { AdTypeEntity } from '../entities/ad-type.entity';
+import { JwtAuthService } from '../jwt.service';
 
 @Injectable()
 export class AppService {
@@ -26,6 +27,8 @@ export class AppService {
   private AdTypeRepository: Repository<AdTypeEntity>;
 
   private s = 10;
+
+  constructor(private readonly jwtService: JwtAuthService) {}
   getHello(): string {
     return 'Hello World!';
   }
@@ -45,7 +48,16 @@ export class AppService {
           password: hashedPassword,
         })
         .execute();
-      return createNewUser;
+      const customer = await this.getCustomerByEmail(createNewUser.email);
+      const customerId = customer.id;
+      console.log("aa" + customerId)
+      const payload = { email: customer.email, sub: customerId };
+      console.log("paylod " + payload.sub)
+      const accessToken = await this.jwtService.generateToken(payload);
+      return {
+        user: createNewUser,
+        token: accessToken,
+      };
     } catch (e) {
       console.error(e);
       return false;
@@ -64,8 +76,14 @@ export class AppService {
         loginUser.password,
         user.password,
       );
+      if (!isPasswordValid) {
+        return false;
+      }
 
+      const payload = { email: user.email, sub: user.id };
+      const accessToken = await this.jwtService.generateToken(payload);
       return {
+        accessToken: accessToken,
         login: isPasswordValid,
         name: user.nick_name,
         role: user.role,
@@ -271,11 +289,11 @@ export class AppService {
     }
   }
 
-  async getOrderByCustomerEmail(email: string) {
-    const customer = await this.getCustomerByEmail(email);
+  async getOrderByCustomerEmail(customerId: number) {
     try {
+      console.log(customerId)
       return await this.AdAnalysisRepository.find({
-        where: { customer_id: customer.id },
+        where: { customer_id: customerId },
       });
     } catch (e) {
       console.error(e);

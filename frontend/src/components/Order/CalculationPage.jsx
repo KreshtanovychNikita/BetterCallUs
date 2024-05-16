@@ -3,15 +3,15 @@ import styles from './CalculationPage.module.css';
 
 const CalculationPage = () => {
   const location = useLocation();
-  const { typeOfAd } = location.state || {};
+  const { typeOfAd , typeId } = location.state || {};
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        <h1>Розрахунок типу реклами: {typeOfAd}</h1>
-      </div>
-      <NavLink to="/order">
-        <button className={styles.button}> &#8592; Назад</button>
+        <div className={styles.title}>
+            <h1>Розрахунок типу реклами: {typeOfAd}</h1>
+        </div>
+        <NavLink to="/order">
+            <button className={styles.button}> &#8592; Назад</button>
       </NavLink>
     </div>
   );
