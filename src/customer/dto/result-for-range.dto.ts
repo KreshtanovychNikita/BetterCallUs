@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 export class ResultForRangeDto {
   @IsNotEmpty()
   @IsNumber()
-  ad_density: number;
+  ad_type: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -12,10 +12,6 @@ export class ResultForRangeDto {
   @IsNotEmpty()
   @IsNumber()
   max_customer_number: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  coefficient_k: number;
 
   @IsNotEmpty()
   @IsNumber()

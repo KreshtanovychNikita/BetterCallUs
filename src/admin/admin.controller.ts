@@ -4,6 +4,7 @@ import { EditUserDto } from './dto/edit-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { CreateNewUserAdminDto } from './dto/create-new-user-admin.dto';
 import { LoginToAdminDto } from './dto/login-to-admin.dto';
+import { CreateNewAdTypeDto } from './dto/create-new-ad-type.dto';
 
 @Controller()
 export class AdminController {
@@ -26,5 +27,10 @@ export class AdminController {
   @Post('admin/loginUserToAdmin')
   async loginUserToAdmin(@Body() login: LoginToAdminDto) {
     return this.adminService.loginToAdmin(login);
+  }
+
+  @Post('admin/createNewAdType')
+  async createNewAdType(@Body() newAdType: CreateNewAdTypeDto) {
+    return this.adminService.createNewAdType(newAdType);
   }
 }

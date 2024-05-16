@@ -12,7 +12,7 @@ import { ResultForRangeDto } from './dto/result-for-range.dto';
 import { FetchAllStatsDto } from './dto/fetch-all-stats.dto';
 import { CreateNewOrderDto } from './dto/create-new-order.dto';
 import { AdAnalysisEntity } from '../entities/ad-analysis.entity';
-import { GetUserDto } from './dto/get-user.dto';
+import { AdTypeEntity } from '../entities/ad-type.entity';
 
 @Injectable()
 export class AppService {
@@ -22,13 +22,10 @@ export class AppService {
   @InjectRepository(AdAnalysisEntity)
   private AdAnalysisRepository: Repository<AdAnalysisEntity>;
 
-  // private product_cost = 2;
-  // private ad_density = 0.0001;
-  // private ad_number = 0.045;
-  // private max_customer_number = 20000;
-  // private coefficient_k = 0.2;
+  @InjectRepository(AdTypeEntity)
+  private AdTypeRepository: Repository<AdTypeEntity>;
+
   private s = 10;
-  // private G12: number;
   getHello(): string {
     return 'Hello World!';
   }
@@ -78,18 +75,33 @@ export class AppService {
     }
   }
 
+  async getAdConstValueById(id: number) {
+    try {
+      const adType = await this.AdTypeRepository.findOne({
+        where: { id: id },
+      });
+      if (adType) {
+        return adType;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async checkAdequacyOfAdvertising(data: CheckAdequacyOfAdvertisingDto) {
     try {
+      const values = await this.getAdConstValueById(data.ad_type);
+      const adNumber = data.ad_number / values.ad_number_percent;
       return (
         data.product_cost *
-          data.ad_density *
-          (data.ad_density ** 2 / data.ad_number ** 2 +
+          values.ad_density *
+          (values.ad_density ** 2 / adNumber ** 2 +
             2 *
               data.max_customer_number *
-              (1 - 2 * data.coefficient_k) *
-              (data.ad_number / data.ad_density) +
+              (1 - 2 * values.coefficient_k) *
+              (adNumber / values.ad_density) +
             data.max_customer_number ** 2) >
-        this.s * (data.ad_number / data.ad_density)
+        this.s * (adNumber / values.ad_density)
       );
     } catch (e) {
       console.log(e);
@@ -99,15 +111,17 @@ export class AppService {
 
   async calculateNumberOfBuyers(data: NumberOfBuyersDto) {
     try {
+      const values = await this.getAdConstValueById(data.ad_type);
+      const adNumber = data.ad_number / values.ad_number_percent;
       const exponent =
-        -data.coefficient_k *
-        (data.ad_number + data.ad_density * data.max_customer_number) *
+        -values.coefficient_k *
+        (adNumber + values.ad_density * data.max_customer_number) *
         150;
       const result =
-        (data.ad_number / data.ad_density) *
-          ((data.ad_number + data.ad_density * data.max_customer_number) /
-            (data.ad_number +
-              data.ad_density *
+        (adNumber / values.ad_density) *
+          ((adNumber + values.ad_density * data.max_customer_number) /
+            (adNumber +
+              values.ad_density *
                 data.max_customer_number *
                 Math.E ** exponent)) -
         1;
@@ -119,13 +133,14 @@ export class AppService {
 
   async calculateTOne(data: CalculateTOneDto) {
     try {
-      const part =
-        (data.ad_density / data.ad_number) * data.max_customer_number;
+      const values = await this.getAdConstValueById(data.ad_type);
+      const adNumber = data.ad_number / values.ad_number_percent;
+      const part = (values.ad_density / adNumber) * data.max_customer_number;
       const result =
         (Math.log(part) /
-          (data.coefficient_k *
-            (data.ad_number / data.ad_density + data.max_customer_number))) *
-        data.ad_density;
+          (values.coefficient_k *
+            (adNumber / values.ad_density + data.max_customer_number))) *
+        values.ad_density;
       return result;
     } catch (e) {
       console.log(e);
@@ -134,16 +149,17 @@ export class AppService {
 
   async calculateResults(G12: number, data: ResultForRangeDto) {
     try {
+      const values = await this.getAdConstValueById(data.ad_type);
+      const adNumber = data.ad_number / values.ad_number_percent;
       const result =
-        (data.ad_number / data.ad_density) *
-        ((data.ad_number + data.ad_density * data.max_customer_number) /
-          (data.ad_number +
-            data.ad_density *
+        (adNumber / values.ad_density) *
+        ((adNumber + values.ad_density * data.max_customer_number) /
+          (adNumber +
+            values.ad_density *
               data.max_customer_number *
               Math.exp(
-                -data.coefficient_k *
-                  (data.ad_number +
-                    data.ad_density * data.max_customer_number) *
+                -values.coefficient_k *
+                  (adNumber + values.ad_density * data.max_customer_number) *
                   G12,
               )) -
           1);
@@ -164,6 +180,7 @@ export class AppService {
 
   async fetchAllStats(data: FetchAllStatsDto) {
     try {
+      const values = await this.getAdConstValueById(data.ad_type);
       const checkAdequacyOfAdvertising =
         await this.checkAdequacyOfAdvertising(data);
       const calculateNumberOfBuyers = await this.calculateNumberOfBuyers(data);
@@ -172,7 +189,8 @@ export class AppService {
         await this.calculateResultsForRange(data);
 
       const totalIncome = data.product_profit * calculateNumberOfBuyers;
-      const totalCosts = data.ad_act_cost * data.last_ad_day * data.ad_density;
+      const totalCosts =
+        values.ad_act_cost * data.last_ad_day * values.ad_density;
       const profit = totalIncome - totalCosts;
 
       if (checkAdequacyOfAdvertising) {
@@ -219,6 +237,9 @@ export class AppService {
 
   async createNewOrder(data: CreateNewOrderDto) {
     try {
+      const adType = await this.AdTypeRepository.findOne({
+        where: { id: data.ad_type },
+      });
       const adModel = await this.fetchAllStats(data);
       const customer = await this.getCustomerByEmail(data.email);
       const key = `K2024${Math.floor(1000 + Math.random() * 9000)}${String.fromCharCode(65 + Math.floor(Math.random() * 26))}`;
@@ -226,6 +247,7 @@ export class AppService {
         .insert()
         .into(AdAnalysisEntity)
         .values({
+          ad_type: adType.name,
           email: data.email,
           customer_id: customer.id,
           adequacy_of_advertising: adModel.adequacyOfAdvertising,
@@ -249,16 +271,31 @@ export class AppService {
     }
   }
 
-  async getOrderByCustomerEmail(email: GetUserDto) {
-    const customer = await this.getCustomerByEmail(email.email);
+  async getOrderByCustomerEmail(email: string) {
+    const customer = await this.getCustomerByEmail(email);
     try {
-      const orders = await this.AdAnalysisRepository.find({
+      return await this.AdAnalysisRepository.find({
         where: { customer_id: customer.id },
       });
-      console.log(orders);
-      return orders;
     } catch (e) {
       console.error(e);
+    }
+  }
+  async getAllAdTypes() {
+    try {
+      return await this.AdTypeRepository.find();
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  async getAdInfoById(id: number) {
+    try {
+      return await this.AdTypeRepository.findOne({ where: { id: id } });
+    } catch (e) {
+      console.log(e);
+      return 'Тип реклами не знайдено';
     }
   }
 }

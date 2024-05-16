@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 export class NumberOfBuyersDto {
   @IsNotEmpty()
   @IsNumber()
-  ad_density: number;
+  ad_type: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -13,7 +13,4 @@ export class NumberOfBuyersDto {
   @IsNumber()
   max_customer_number: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  coefficient_k: number;
 }

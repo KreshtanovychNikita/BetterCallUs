@@ -1,13 +1,13 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import {IsNotEmpty, IsNumber, IsString} from 'class-validator';
 
 export class CheckAdequacyOfAdvertisingDto {
   @IsNotEmpty()
   @IsNumber()
-  product_cost: number;
+  ad_type: number;
 
   @IsNotEmpty()
   @IsNumber()
-  ad_density: number;
+  product_cost: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -17,7 +17,4 @@ export class CheckAdequacyOfAdvertisingDto {
   @IsNumber()
   max_customer_number: number;
 
-  @IsNotEmpty()
-  @IsNumber()
-  coefficient_k: number;
 }

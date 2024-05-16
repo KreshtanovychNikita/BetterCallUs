@@ -3,6 +3,10 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateNewOrderDto {
   @IsNotEmpty()
   @IsNumber()
+  ad_type: number;
+
+  @IsNotEmpty()
+  @IsNumber()
   product_profit: number;
 
   @IsNotEmpty()
@@ -11,15 +15,7 @@ export class CreateNewOrderDto {
 
   @IsNotEmpty()
   @IsNumber()
-  ad_act_cost: number;
-
-  @IsNotEmpty()
-  @IsNumber()
   product_cost: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  ad_density: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -28,10 +24,6 @@ export class CreateNewOrderDto {
   @IsNotEmpty()
   @IsNumber()
   max_customer_number: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  coefficient_k: number;
 
   @IsNotEmpty()
   @IsString()

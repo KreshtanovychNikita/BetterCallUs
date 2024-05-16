@@ -1,44 +1,29 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity({ name: 'ad-analysis-entity' })
-@Index('idx_id_analysis', ['id'])
-export class AdAnalysisEntity {
+@Entity({ name: 'ad-type-entity' })
+@Index('idx_id_type', ['id'])
+export class AdTypeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
-  email: string;
-
-  @Column({ type: 'varchar', length: 255 })
-  ad_type: string;
-
-  @Column()
-  customer_id: number;
-
-  @Column()
-  adequacy_of_advertising: boolean;
+  name: string;
 
   @Column({ type: 'float' })
-  t_one: number;
+  ad_density: number;
 
   @Column({ type: 'float' })
-  number_of_buyers: number;
-
-  @Column({ type: 'jsonb' })
-  data_for_diagrams: Record<string, number>;
+  ad_number_percent: number;
 
   @Column({ type: 'float' })
-  total_income: number;
+  coefficient_k: number;
 
   @Column({ type: 'float' })
-  total_cost: number;
+  ad_act_cost: number;
 
-  @Column({ type: 'float' })
-  profit: number;
-
-  @Column()
-  key: string;
+  @Column({ type: 'varchar', length: 550 })
+  description: string;
 
   @CreateDateColumn({
     name: 'created_at',
