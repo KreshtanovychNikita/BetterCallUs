@@ -1,31 +1,27 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateNewOrderDto {
+export class CreateNewAdTypeDto {
   @IsNotEmpty()
-  @IsNumber()
-  ad_type: number;
+  @IsString()
+  name: string;
 
   @IsNotEmpty()
   @IsNumber()
-  product_profit: number;
+  ad_density: number;
 
   @IsNotEmpty()
   @IsNumber()
-  last_ad_day: number;
+  coefficient_k: number;
 
   @IsNotEmpty()
   @IsNumber()
-  product_cost: number;
+  ad_number_percent: number;
 
   @IsNotEmpty()
   @IsNumber()
-  ad_number: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  max_customer_number: number;
+  ad_act_cost: number;
 
   @IsNotEmpty()
   @IsString()
-  email: string;
+  description: string;
 }

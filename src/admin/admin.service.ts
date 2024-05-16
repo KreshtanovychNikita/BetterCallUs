@@ -8,6 +8,8 @@ import { DeleteUserDto } from './dto/delete-user.dto';
 import { CreateNewUserAdminDto } from './dto/create-new-user-admin.dto';
 import { AdAnalysisEntity } from '../entities/ad-analysis.entity';
 import { LoginToAdminDto } from './dto/login-to-admin.dto';
+import { CreateNewAdTypeDto } from './dto/create-new-ad-type.dto';
+import { AdTypeEntity } from '../entities/ad-type.entity';
 
 @Injectable()
 export class AdminService {
@@ -16,6 +18,9 @@ export class AdminService {
 
   @InjectRepository(AdAnalysisEntity)
   private AdAnalysisRepository: Repository<AdAnalysisEntity>;
+
+  @InjectRepository(AdTypeEntity)
+  private AdTypeRepository: Repository<AdTypeEntity>;
 
   async createNewUserByAdmin(
     CreateNewUser: CreateNewUserAdminDto,
@@ -104,6 +109,27 @@ export class AdminService {
       return await this.AdAnalysisRepository.findOne({
         where: { id: orderId },
       });
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  async createNewAdType(newAdType: CreateNewAdTypeDto) {
+    try {
+      await this.AdTypeRepository.createQueryBuilder('ad')
+        .insert()
+        .into(AdTypeEntity)
+        .values({
+          name: newAdType.name,
+          ad_density: newAdType.ad_density,
+          ad_act_cost: newAdType.ad_act_cost,
+          coefficient_k: newAdType.coefficient_k,
+          ad_number_percent: newAdType.ad_number_percent,
+          description: newAdType.description,
+        })
+        .execute();
+      return newAdType;
     } catch (e) {
       console.log(e);
       return false;

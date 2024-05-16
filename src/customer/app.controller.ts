@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateNewUserDto } from './dto/create-new-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -63,18 +63,28 @@ export class AppController {
     return await this.appService.createNewOrder(createNewOrder);
   }
 
-  @Post('getCustomerByEmail')
-  async getCustomerByEmail(@Body() email: string) {
+  @Get('getCustomerByEmail/:email')
+  async getCustomerByEmail(@Param('email') email: string) {
     return await this.appService.getCustomerByEmail(email);
   }
 
-  @Post('getCustomerById')
-  async getCustomerById(@Body() customerId: number) {
+  @Get('getCustomerById/:customerId')
+  async getCustomerById(@Param('customerId') customerId: number) {
     return await this.appService.getCustomerById(customerId);
   }
 
-  @Post('getOrderByCustomerEmail')
-  async getOrderByCustomerEmail(@Body() email: GetUserDto) {
+  @Get('getOrderByCustomerEmail/:email')
+  async getOrderByCustomerEmail(@Param('email') email: string) {
     return await this.appService.getOrderByCustomerEmail(email);
+  }
+
+  @Get('getAllAdTypes')
+  async getAllAdTypes() {
+    return await this.appService.getAllAdTypes();
+  }
+
+  @Get('getAdInfoById/:id')
+  async getAdInfoById(@Param('id') id: number) {
+    return await this.appService.getAdInfoById(id);
   }
 }
