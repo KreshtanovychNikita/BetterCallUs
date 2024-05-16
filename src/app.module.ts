@@ -9,9 +9,15 @@ import { AdAnalysisEntity } from './entities/ad-analysis.entity';
 import { AdminController } from './admin/admin.controller';
 import { AdminService } from './admin/admin.service';
 import { AdTypeEntity } from './entities/ad-type.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthService } from './jwt.service';
 
 @Module({
   imports: [
+    JwtModule.register({
+      secret: String(process.env.SECRET_JWT),
+      signOptions: { expiresIn: '24h' },
+    }),
     ConfigModule.forRoot({}),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -26,6 +32,7 @@ import { AdTypeEntity } from './entities/ad-type.entity';
     TypeOrmModule.forFeature([UserEntity, AdAnalysisEntity, AdTypeEntity]),
   ],
   controllers: [AppController, AdminController],
-  providers: [AppService, AdminService],
+  providers: [AppService, AdminService, JwtAuthService],
+  exports: [JwtAuthService],
 })
 export class AppModule {}

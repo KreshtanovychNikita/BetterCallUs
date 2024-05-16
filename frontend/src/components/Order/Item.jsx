@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Modal from './Modal';
 
-const Item = ({ title, description, imageSrc, imageAlt }) => {
-  const { isLoggedIn } = useAuth();
+const Item = ({ title, description, imageSrc, imageAlt , id}) => {
   const [typeOfAd, setTypeOfAd] = useState('');
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -22,13 +21,14 @@ const Item = ({ title, description, imageSrc, imageAlt }) => {
     };
   }, [showModal]);
 
-  const handleSelectAd = (type) => {
-    if (!isLoggedIn) {
+  const handleSelectAd = (type , id) => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
       setShowModal(true);
       return;
     }
     setTypeOfAd(type);
-    navigate('/calculation', { state: { typeOfAd: type } });
+    navigate('/calculation', { state: { typeOfAd: type , typeId: id } });
   };
 
   return (
@@ -38,11 +38,12 @@ const Item = ({ title, description, imageSrc, imageAlt }) => {
         <div>
           <div className={styles.adList}>
             <h3 className={styles.adTitle}>{title}</h3>
-            <img className={styles.ratingStar} src="./images/star.png" alt="" />
+            <h3 className={styles.adTitle}>{id}</h3>
+            <img className={styles.ratingStar} src="./images/star.png" alt=""/>
           </div>
           <div className={styles.description}>{description}</div>
           <button
-            onClick={() => handleSelectAd(title)}
+            onClick={() => handleSelectAd(title , id)}
             className={styles.orderButton}
           >
             Замовити

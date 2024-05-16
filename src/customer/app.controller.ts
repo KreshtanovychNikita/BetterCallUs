@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateNewUserDto } from './dto/create-new-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -8,11 +8,14 @@ import { CalculateTOneDto } from './dto/calculate-t-one.dto';
 import { ResultForRangeDto } from './dto/result-for-range.dto';
 import { FetchAllStatsDto } from './dto/fetch-all-stats.dto';
 import { CreateNewOrderDto } from './dto/create-new-order.dto';
-import { GetUserDto } from './dto/get-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Get()
   getHello(): { message: string } {
@@ -68,14 +71,24 @@ export class AppController {
     return await this.appService.getCustomerByEmail(email);
   }
 
-  @Get('getCustomerById/:customerId')
-  async getCustomerById(@Param('customerId') customerId: number) {
+  @Get('getCustomerById')
+  async getCustomerById(@Headers('authorization') authorizationHeader: string) {
+    const accessToken = authorizationHeader.split(' ')[1];
+    const decodedToken = await this.jwtService.verify(accessToken);
+    const customerId = decodedToken.sub;
+    console.log(decodedToken)
     return await this.appService.getCustomerById(customerId);
   }
 
-  @Get('getOrderByCustomerEmail/:email')
-  async getOrderByCustomerEmail(@Param('email') email: string) {
-    return await this.appService.getOrderByCustomerEmail(email);
+  @Get('getOrderByCustomerId')
+  async getOrderByCustomerEmail(
+    @Headers('authorization') authorizationHeader: string,
+  ) {
+    const accessToken = authorizationHeader.split(' ')[1];
+    const decodedToken = await this.jwtService.verify(accessToken);
+    const customerId = decodedToken.sub;
+    console.log(customerId)
+    return await this.appService.getOrderByCustomerEmail(customerId);
   }
 
   @Get('getAllAdTypes')

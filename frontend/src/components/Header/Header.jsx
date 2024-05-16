@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
   const { isLoggedIn } = useAuth();
+  const accessToken = localStorage.getItem('accessToken');
 
   return (
     <header className={styles.header}>
@@ -34,7 +35,7 @@ const Header = () => {
           КОНТАКТИ
         </NavLink>
         <div className={styles.verticalLine}></div>
-        {isLoggedIn ? (
+        {accessToken ? (
           <NavLink
             to="/cabinet"
             className={({ isActive }) => (isActive ? styles.active : undefined)}
