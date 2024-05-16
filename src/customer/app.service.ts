@@ -12,7 +12,6 @@ import { ResultForRangeDto } from './dto/result-for-range.dto';
 import { FetchAllStatsDto } from './dto/fetch-all-stats.dto';
 import { CreateNewOrderDto } from './dto/create-new-order.dto';
 import { AdAnalysisEntity } from '../entities/ad-analysis.entity';
-import { GetUserDto } from './dto/get-user.dto';
 import { AdTypeEntity } from '../entities/ad-type.entity';
 
 @Injectable()
@@ -214,7 +213,6 @@ export class AppService {
 
   async getCustomerByEmail(email: string) {
     try {
-      console.log(email)
       const user = await this.UserRepository.findOne({
         where: { email: email },
       });
