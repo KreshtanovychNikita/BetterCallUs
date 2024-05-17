@@ -10,8 +10,8 @@ const LogIn = () => {
   const [password, setPassword] = useState('');
   const [nick_name, setName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { login } = useAuth();
-  const { register } = useAuth();
+  const { login , register } = useAuth();
+  // const { register } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const LogIn = () => {
   const handleLogin = async () => {
     try {
       const accessToken = await login(email, password);
-      if (!accessToken.login === true) {
+      if (accessToken.login === true) {
         localStorage.setItem('accessToken', accessToken.accessToken);
         setIsLoggedIn(true);
         navigate('/cabinet');

@@ -1,5 +1,13 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { UserEntity } from './user.entity';
 
 @Entity({ name: 'ad-analysis-entity' })
 @Index('idx_id_analysis', ['id'])
@@ -15,6 +23,10 @@ export class AdAnalysisEntity {
 
   @Column()
   customer_id: number;
+
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'customer_id', referencedColumnName: 'id' })
+  user: UserEntity;
 
   @Column()
   adequacy_of_advertising: boolean;
