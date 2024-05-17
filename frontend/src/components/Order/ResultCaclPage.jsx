@@ -1,135 +1,84 @@
-
-import { useLocation, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
 import styles from './ResultCaclPage.module.css';
-import { useState } from "react";
-import { fetchAllStats } from "../../context/FetchAllStats";
 
 const ResultCalcPage = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { state } = location;
-    const { typeOfAd, typeOfDesc, typeOfCost , typeId } = state || {};
-    const [formData, setFormData] = useState({
-        adCount: 0,
-        userCount: 0,
-        adDuration: 0,
-        productPrice: 0,
-        productPriceWithoutAd: 0
-    });
+  const data = {
+    labels: ['Покупці', 'Витрати', 'Дохід', 'Прибуток'],
+    datasets: [
+      {
+        label: 'Розрахунок типу реклами',
+        data: [24500, 58000, 70000, 120000],
+        backgroundColor: ['#4CAF50', '#FF6384', '#36A2EB', '#FFCE56'],
+      },
+    ],
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        // text: 'Математична модель для реклами',
+      },
+    },
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const accessToken = localStorage.getItem('accessToken');
-            if (accessToken) {
-                const orderData = await fetchAllStats(formData, 6);
-                console.log(orderData);
-                if (orderData) {
-                    // navigate('/calculating-result')
-                }
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
-    };
-
-    return (
-        <div className={styles.container}>
-            <div className={styles.title}>
-                <h1>Розрахунок типу реклами: {typeOfAd}</h1>
+  return (
+    <div className={styles.container}>
+      <div className={styles.title}>
+        <h1>Розрахунок типу реклами</h1>
+      </div>
+      <div className={styles.desc}>
+        <h4>Математична модель для реклами</h4>
+        <div className={styles.data}>
+          <div>
+            <div className={styles.group}>
+              <p>Реклама доцільна?</p>
+              <h4 className={styles.text}>Так</h4>
             </div>
-            <NavLink to="/order" className={styles.link}>
-                <button className={styles.button}> &#8592; Назад</button>
+
+            <div className={styles.group}>
+              <p>Оптимальна к-сть покупців</p>
+              <h4 className={styles.text}>24500</h4>
+            </div>
+            <div className={styles.group}>
+              <p>Т1</p>
+              <h4 className={styles.text}>9.45</h4>
+            </div>
+          </div>
+          <div>
+            <div className={styles.group}>
+              <p>Сумарні витрати</p>
+              <h4 className={styles.text}>58000</h4>
+            </div>
+            <div className={styles.group}>
+              <p>Сумарний дохід</p>
+              <h4 className={styles.text}>70000</h4>
+            </div>
+            <div className={styles.group}>
+              <p>Прибуток</p>
+              <h4 className={styles.text}>120000</h4>
+            </div>
+          </div>
+          <div className={styles.order}>
+            <p>Ціна акту реклами</p>
+            <h4 className={styles.price}>1000000</h4>
+            <NavLink to="/payment">
+              <button className={styles.button}>Замовити</button>
             </NavLink>
-            <div className={styles.content}>
-                <h4>Заповніть деталі для обчислення математичної моделі реклами</h4>
-                <form className={styles.form} onSubmit={handleSubmit}>
-                    <div className={styles.column}>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="adCount">Кількість реклам:</label>
-                            <input
-                                type="number"
-                                id="adCount"
-                                value={formData.adCount}
-                                name="adCount"
-                                className={styles.input}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="userCount">Кількість користувачів:</label>
-                            <input
-                                type="number"
-                                id="userCount"
-                                value={formData.userCount}
-                                name="userCount"
-                                className={styles.input}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="adDuration">Тривалість реклами в днях:</label>
-                            <input
-                                type="number"
-                                id="adDuration"
-                                value={formData.adDuration}
-                                name="adDuration"
-                                className={styles.input}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.column}>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="productPrice">Ціна товару:</label>
-                            <input
-                                type="number"
-                                step="0.01"
-                                id="productPrice"
-                                value={formData.productPrice}
-                                name="productPrice"
-                                className={styles.input}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="productPriceWithoutAd">Ціна товару без витрат на рекламу:</label>
-                            <input
-                                type="number"
-                                step="0.01"
-                                id="productPriceWithoutAd"
-                                value={formData.productPriceWithoutAd}
-                                name="productPriceWithoutAd"
-                                className={styles.input}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.column}>
-                        <div className={styles.formGroup}>
-                            <p className={styles.par}>Ціна акту реклами:</p>
-                            <h4 className={styles.price}>{typeOfCost}</h4>
-                        </div>
-                    </div>
-                    <div className={styles.column}>
-                        <div className={styles.formGroup}>
-                            <p className={styles.description}>{typeOfDesc}</p>
-                        </div>
-                    </div>
-                    <div className={styles.desc}>
-                        <button type="submit" className={styles.btn}>
-                            Розрахувати
-                        </button>
-                    </div>
-                </form>
-            </div>
+          </div>
         </div>
-    );
+        <div className={styles.chart}>
+          <Bar data={data} options={options} />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ResultCalcPage;

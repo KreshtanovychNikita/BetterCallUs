@@ -8,7 +8,6 @@
 //   margin: 0 auto;
 // }
 
-
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
@@ -22,7 +21,8 @@ import LogIn from './components/Login/LogIn';
 import Cabinet from './components/Cabinet/Cabinet';
 import Orders from './components/Cabinet/Orders';
 import CalculationPage from './components/Order/CalculationPage';
-import ResultCaclPage from "./components/Order/ResultCaclPage";
+import ResultCaclPage from './components/Order/ResultCaclPage';
+import Payment from './components/Order/Payment';
 
 function App() {
   // const [message, setMessage] = useState('');
@@ -52,7 +52,8 @@ function App() {
           <Route path="/cabinet" element={<Cabinet />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/calculation" element={<CalculationPage />} />
-          <Route path="/calculation/result" element={<ResultCaclPage />} />
+          <Route path="/result" element={<ResultCaclPage />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="*" element={<h1>Такої сторінки не існує!</h1>} />
         </Routes>
         <Footer />
