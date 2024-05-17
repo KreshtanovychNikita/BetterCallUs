@@ -267,7 +267,7 @@ export class AppService {
         .values({
           ad_type: adType.name,
           email: data.email,
-          customer_id: customer.id,
+          user: customer,
           adequacy_of_advertising: adModel.adequacyOfAdvertising,
           t_one: adModel.tOne,
           number_of_buyers: adModel.numberOfBuyers,

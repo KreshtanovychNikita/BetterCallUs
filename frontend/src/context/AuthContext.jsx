@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {// Отримуємо функц�
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      // Обробити дані для входу
+      console.log(data.login)
       if (data.login === true) {
         return data;
       }

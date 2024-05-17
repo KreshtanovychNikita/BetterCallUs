@@ -8,6 +8,7 @@ const Item = ({ title, description, imageSrc, imageAlt, id, cost }) => {
   const [typeOfAd, setTypeOfAd] = useState('');
   const [typeOfDesc, setTypeOfDesc] = useState('');
   const [typeOfCost, setTypeOfCost] = useState('');
+  const [typeId, setTypeOfId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ const Item = ({ title, description, imageSrc, imageAlt, id, cost }) => {
     };
   }, [showModal]);
 
-  const handleSelectAd = (type, desc, cost) => {
+  const handleSelectAd = (type, desc, cost, id) => {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       setShowModal(true);
@@ -32,8 +33,9 @@ const Item = ({ title, description, imageSrc, imageAlt, id, cost }) => {
     setTypeOfAd(type);
     setTypeOfDesc(desc);
     setTypeOfCost(cost);
+    setTypeOfId(id)
     navigate('/calculation', {
-      state: { typeOfAd: type, typeOfDesc: desc, typeOfCost: cost },
+      state: { typeOfAd: type, typeOfDesc: desc, typeOfCost: cost ,typeId: id },
     });
   };
 
@@ -49,7 +51,7 @@ const Item = ({ title, description, imageSrc, imageAlt, id, cost }) => {
           </div>
           <div className={styles.description}>{description}</div>
           <button
-            onClick={() => handleSelectAd(title, description, cost)}
+            onClick={() => handleSelectAd(title, description, cost , id)}
             className={styles.orderButton}
           >
             Замовити

@@ -58,6 +58,7 @@ export class AppController {
 
   @Post('calculating/fetchAllStats')
   async fetchAllStats(@Body() fetchAllStats: FetchAllStatsDto) {
+    console.log(fetchAllStats)
     return await this.appService.fetchAllStats(fetchAllStats);
   }
 
@@ -87,7 +88,6 @@ export class AppController {
     const accessToken = authorizationHeader.split(' ')[1];
     const decodedToken = await this.jwtService.verify(accessToken);
     const customerId = decodedToken.sub;
-    console.log(customerId)
     return await this.appService.getOrderByCustomerEmail(customerId);
   }
 
