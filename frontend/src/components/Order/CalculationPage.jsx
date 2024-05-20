@@ -1,22 +1,21 @@
-
 import { useLocation, NavLink, useNavigate } from 'react-router-dom';
 import styles from './CalculationPage.module.css';
-import { useState } from "react";
-import { fetchAllStats } from "../../context/FetchAllStats";
+import { useState } from 'react';
+import { fetchAllStats } from '../../context/FetchAllStats';
 // import { useHistory } from 'react-router-dom';
 
 const CalculationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  const { typeOfAd, typeOfDesc, typeOfCost , typeId } = state || {};
+  const { typeOfAd, typeOfDesc, typeOfCost, typeId } = state || {};
   // const history = useHistory();
   const [formData, setFormData] = useState({
-    adCount: 0,
-    userCount: 0,
-    adDuration: 0,
-    productPrice: 0,
-    productPriceWithoutAd: 0
+    adCount: '',
+    userCount: '',
+    adDuration: '',
+    productPrice: '',
+    productPriceWithoutAd: '',
   });
 
   const handleChange = (e) => {
@@ -54,45 +53,46 @@ const CalculationPage = () => {
       <div className={styles.content}>
         <h4>Заповніть деталі для обчислення математичної моделі реклами</h4>
         <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.column}>
-            <div className={styles.formGroup}>
-              <label htmlFor="adCount">Кількість реклам:</label>
-              <input
+          <div className={styles.columnsContainer}>
+            <div className={styles.column}>
+              <div className={styles.formGroup}>
+                <label htmlFor="adCount">Кількість реклам:</label>
+                <input
                   type="number"
                   id="adCount"
                   value={formData.adCount}
                   name="adCount"
                   className={styles.input}
                   onChange={handleChange}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="userCount">Кількість користувачів:</label>
-              <input
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="userCount">Кількість користувачів:</label>
+                <input
                   type="number"
                   id="userCount"
                   value={formData.userCount}
                   name="userCount"
                   className={styles.input}
                   onChange={handleChange}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="adDuration">Тривалість реклами в днях:</label>
-              <input
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="adDuration">Тривалість реклами в днях:</label>
+                <input
                   type="number"
                   id="adDuration"
                   value={formData.adDuration}
                   name="adDuration"
                   className={styles.input}
                   onChange={handleChange}
-              />
+                />
+              </div>
             </div>
-          </div>
-          <div className={styles.column}>
-            <div className={styles.formGroup}>
-              <label htmlFor="productPrice">Ціна товару:</label>
-              <input
+            <div className={styles.column}>
+              <div className={styles.formGroup}>
+                <label htmlFor="productPrice">Ціна товару:</label>
+                <input
                   type="number"
                   step="0.01"
                   id="productPrice"
@@ -100,11 +100,13 @@ const CalculationPage = () => {
                   name="productPrice"
                   className={styles.input}
                   onChange={handleChange}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="productPriceWithoutAd">Ціна товару без витрат на рекламу:</label>
-              <input
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="productPriceWithoutAd">
+                  Ціна товару без витрат на рекламу:
+                </label>
+                <input
                   type="number"
                   step="0.01"
                   id="productPriceWithoutAd"
@@ -112,24 +114,23 @@ const CalculationPage = () => {
                   name="productPriceWithoutAd"
                   className={styles.input}
                   onChange={handleChange}
-              />
+                />
+              </div>
             </div>
-          </div>
-          <div className={styles.column}>
-            <div className={styles.formGroup}>
-              <p className={styles.par}>Ціна акту реклами:</p>
-              <h4 className={styles.price}>{typeOfCost}</h4>
-            </div>
-          </div>
-          <div className={styles.column}>
-            <div className={styles.formGroup}>
-          <p className={styles.description}>{typeOfDesc}</p>
+            <div className={styles.column}>
+              <div className={styles.formGroup}>
+                <p className={styles.par}>Ціна акту реклами:</p>
+                <h4 className={styles.price}>{typeOfCost}</h4>
+              </div>
             </div>
           </div>
           <div className={styles.desc}>
-            <button type="submit" className={styles.btn}>
-              Розрахувати
-            </button>
+            <p className={styles.description}>{typeOfDesc}</p>
+            <NavLink to="/result">
+              <button type="submit" className={styles.btn}>
+                Розрахувати
+              </button>
+            </NavLink>
           </div>
         </form>
       </div>

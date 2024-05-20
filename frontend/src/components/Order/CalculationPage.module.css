@@ -67,6 +67,7 @@
   padding: 10px 20px;
   font-size: 18px;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .btn:hover {
@@ -90,7 +91,14 @@
 .form {
   margin-top: 20px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.columnsContainer {
+  display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .column {
@@ -141,4 +149,5 @@
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  margin-top: 10px;
 }
